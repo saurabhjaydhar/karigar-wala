@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Karigar Saathi
 
-## Getting Started
+Hyperlocal home-services marketplace. Monorepo (npm workspaces) containing:
 
-First, run the development server:
+- **apps/web** — customer-facing PWA (Next.js App Router). Public browsing, phone-OTP booking flow, "Partner with Us" karigar/contractor application wizard.
+- **apps/admin** — admin dashboard (Next.js). Karigar verification, booking assignment, content/catalog management.
+- **apps/api** — Express + TypeScript API, layered (`routes → controller → service → repository → model`), Mongoose/MongoDB.
+- **packages/shared** — Zod schemas and TypeScript types shared between frontend and backend.
+
+See [KarigarWala_PWA_ProjectPlan_2.md](../KarigarWala_PWA_ProjectPlan_2.md) for the full product/architecture plan and [CHECKLIST.md](CHECKLIST.md) for current build status.
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+
+# infra: MongoDB + Redis
+docker compose -f docker-compose.dev.yml up -d
+
+# run each app in its own terminal
+npm run dev:api
+npm run dev:web
+npm run dev:admin
+
+# optional: sample data
+npm run seed -w apps/api
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Copy `apps/api/.env.example` to `apps/api/.env` and fill in DB/Redis/SMS credentials before running the API.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Status
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Feature-complete against the plan's milestones 1–6 — auth, browsing, bookings, contracts, coupons, reviews, admin panel, PWA, SEO, i18n, notifications (in-app + web push), and a content CMS for the marketing pages. See [CHECKLIST.md](CHECKLIST.md) for the full breakdown, including what's genuinely still open (legal review of Terms/Privacy, actual deployment, branding follow-ups).

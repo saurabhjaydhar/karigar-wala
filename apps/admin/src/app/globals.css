@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f1115;
+  --surface: #ffffff;
+  --surface-muted: #f6f7f9;
+
+  /* Brand navy — extracted from the real logo (#0B2A57) */
+  --brand-navy-50: #f3f4f7;
+  --brand-navy-100: #e7eaee;
+  --brand-navy-200: #c2cad5;
+  --brand-navy-300: #9daabc;
+  --brand-navy-400: #607592;
+  --brand-navy-500: #28446b;
+  --brand-navy-600: #0b2a57;
+  --brand-navy-700: #092247;
+  --brand-navy-800: #071d3b;
+  --brand-navy-900: #061730;
+  --brand-navy-950: #041123;
+
+  /* Brand orange — extracted from the real logo's gradient (#EA6A00 -> #F8A821) */
+  --brand-orange-50: #fef8f2;
+  --brand-orange-100: #fdf0e6;
+  --brand-orange-200: #fadabf;
+  --brand-orange-300: #f7c399;
+  --brand-orange-400: #f19e59;
+  --brand-orange-500: #ed7c1f;
+  --brand-orange-600: #ea6a00;
+  --brand-orange-700: #c05700;
+  --brand-orange-800: #9f4800;
+  --brand-orange-900: #813a00;
+  --brand-orange-950: #5e2a00;
+
+  --gradient-brand: linear-gradient(135deg, var(--brand-navy-600), var(--brand-orange-500));
+  --gradient-brand-soft: linear-gradient(135deg, var(--brand-navy-50), var(--brand-orange-50));
+}
+
+.dark {
+  --background: #0a0e17;
+  --foreground: #eef1f5;
+  --surface: #10151f;
+  --surface-muted: #161c29;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+
+  --color-brand-navy-50: var(--brand-navy-50);
+  --color-brand-navy-100: var(--brand-navy-100);
+  --color-brand-navy-200: var(--brand-navy-200);
+  --color-brand-navy-300: var(--brand-navy-300);
+  --color-brand-navy-400: var(--brand-navy-400);
+  --color-brand-navy-500: var(--brand-navy-500);
+  --color-brand-navy-600: var(--brand-navy-600);
+  --color-brand-navy-700: var(--brand-navy-700);
+  --color-brand-navy-800: var(--brand-navy-800);
+  --color-brand-navy-900: var(--brand-navy-900);
+  --color-brand-navy-950: var(--brand-navy-950);
+
+  --color-brand-orange-50: var(--brand-orange-50);
+  --color-brand-orange-100: var(--brand-orange-100);
+  --color-brand-orange-200: var(--brand-orange-200);
+  --color-brand-orange-300: var(--brand-orange-300);
+  --color-brand-orange-400: var(--brand-orange-400);
+  --color-brand-orange-500: var(--brand-orange-500);
+  --color-brand-orange-600: var(--brand-orange-600);
+  --color-brand-orange-700: var(--brand-orange-700);
+  --color-brand-orange-800: var(--brand-orange-800);
+  --color-brand-orange-900: var(--brand-orange-900);
+  --color-brand-orange-950: var(--brand-orange-950);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --animate-float: float 8s ease-in-out infinite;
+  --animate-float-slow: float 12s ease-in-out infinite;
+  --animate-fade-up: fade-up 0.5s ease-out both;
+  --animate-gradient-x: gradient-x 6s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(2%, -4%) scale(1.05);
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes gradient-x {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
