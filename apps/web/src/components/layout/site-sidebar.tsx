@@ -58,7 +58,7 @@ export function SiteSidebar() {
     <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-black/10 bg-white/70 shadow-sm shadow-black/[0.02] backdrop-blur-xl dark:border-white/10 dark:bg-brand-navy-950/60 lg:flex 2xl:w-80">
       <Link href="/" className="flex items-center gap-2.5 px-5 py-5">
         <Image src="/icon-192.png" alt="" width={36} height={36} className="rounded-xl shadow-sm" />
-        <span className="text-xl font-bold tracking-tight text-brand-navy-700 dark:text-white">
+        <span className="text-lg font-bold tracking-tight text-brand-navy-700 dark:text-white">
           Karigar Saathi
         </span>
       </Link>
@@ -75,7 +75,7 @@ export function SiteSidebar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "group flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-base font-medium transition-all duration-200",
+                  "group flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all duration-200",
                   active
                     ? "bg-gradient-to-r from-brand-navy-600 to-brand-navy-700 text-white shadow-md shadow-brand-navy-900/20"
                     : "text-foreground/75 hover:translate-x-0.5 hover:bg-black/5 hover:text-foreground dark:hover:bg-white/10",
@@ -83,7 +83,7 @@ export function SiteSidebar() {
               >
                 <link.icon
                   className={cn(
-                    "size-5 shrink-0 transition-transform duration-200",
+                    "size-4 shrink-0 transition-transform duration-200",
                     !active && "group-hover:scale-110",
                   )}
                 />
@@ -95,8 +95,8 @@ export function SiteSidebar() {
         </nav>
 
         <Link href="/book" className="mt-4">
-          <Button className="w-full gap-2 text-base shadow-md shadow-brand-orange-600/20">
-            <CalendarPlus className="size-4.5" />
+          <Button className="w-full gap-2 text-sm shadow-md shadow-brand-orange-600/20">
+            <CalendarPlus className="size-4" />
             {tc("bookACarigar")}
           </Button>
         </Link>
@@ -114,7 +114,7 @@ export function SiteSidebar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "group flex items-center gap-3 rounded-xl px-3.5 py-2 text-[0.95rem] transition-all duration-200",
+                  "group flex items-center gap-3 rounded-xl px-3.5 py-2 text-sm transition-all duration-200",
                   active
                     ? "bg-brand-navy-50 text-brand-navy-700 dark:bg-white/10 dark:text-white"
                     : "text-foreground/60 hover:translate-x-0.5 hover:bg-black/5 hover:text-foreground dark:hover:bg-white/10",
@@ -122,7 +122,7 @@ export function SiteSidebar() {
               >
                 <link.icon
                   className={cn(
-                    "size-4.5 shrink-0 transition-transform duration-200",
+                    "size-4 shrink-0 transition-transform duration-200",
                     !active && "group-hover:scale-110",
                   )}
                 />
@@ -145,7 +145,7 @@ export function SiteSidebar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "group flex items-center gap-3 rounded-xl px-3.5 py-2 text-[0.95rem] transition-all duration-200",
+                  "group flex items-center gap-3 rounded-xl px-3.5 py-2 text-sm transition-all duration-200",
                   active
                     ? "bg-brand-navy-50 text-brand-navy-700 dark:bg-white/10 dark:text-white"
                     : "text-foreground/60 hover:translate-x-0.5 hover:bg-black/5 hover:text-foreground dark:hover:bg-white/10",
@@ -153,7 +153,7 @@ export function SiteSidebar() {
               >
                 <link.icon
                   className={cn(
-                    "size-4.5 shrink-0 transition-transform duration-200",
+                    "size-4 shrink-0 transition-transform duration-200",
                     !active && "group-hover:scale-110",
                   )}
                 />

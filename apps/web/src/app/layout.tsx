@@ -28,6 +28,14 @@ export const metadata: Metadata = {
   title: "Karigar Saathi — Book Trusted Local Karigars",
   description: "Hyperlocal home-services marketplace connecting customers to verified local tradespeople.",
   manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Karigar Saathi",
+  },
+  icons: {
+    apple: "/icon-192.png",
+  },
 };
 
 export const viewport = {
