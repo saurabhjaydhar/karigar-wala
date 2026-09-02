@@ -2,6 +2,7 @@ import { Router } from "express";
 import bcrypt from "bcryptjs";
 import { AdminModel } from "../../db/models/admin.model";
 import { ServiceCategoryModel } from "../../db/models/service-category.model";
+import { AreaModel } from "../../db/models/area.model";
 import { UserModel } from "../../db/models/user.model";
 
 // One-time production setup endpoint (create the first admin + seed
@@ -62,6 +63,16 @@ const CATEGORIES = [
   },
 ];
 
+const CITIES = ["Sitarganj", "Rudrapur", "Haldwani", "Shaktifarm"];
+const ZONES = ["Central", "North", "South", "East"];
+const AREAS = CITIES.flatMap((city) =>
+  ZONES.map((zone) => ({
+    name: `${city} ${zone}`,
+    city,
+    isServiceable: true,
+  })),
+);
+
 bootstrapRouter.post("/", async (req, res, next) => {
   try {
     const secret = req.header("x-bootstrap-secret");
@@ -91,7 +102,15 @@ bootstrapRouter.post("/", async (req, res, next) => {
       categoriesSeeded += 1;
     }
 
-    res.json({ admin: admin!.email, categoriesSeeded });
+    let areasSeeded = 0;
+    for (const area of AREAS) {
+      await AreaModel.findOneAndUpdate({ name: area.name, city: area.city }, area, {
+        upsert: true,
+      });
+      areasSeeded += 1;
+    }
+
+    res.json({ admin: admin!.email, categoriesSeeded, areasSeeded });
   } catch (err) {
     next(err);
   }
