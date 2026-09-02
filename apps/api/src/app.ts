@@ -19,6 +19,7 @@ import { reviewsRouter, karigarReviewsRouter, publicReviewsRouter } from "./modu
 import { couponsRouter } from "./modules/coupons/coupons.routes";
 import { notificationsRouter } from "./modules/notifications/notifications.routes";
 import { adminRouter } from "./modules/admin/admin.routes";
+import { bootstrapRouter } from "./modules/bootstrap/bootstrap.routes";
 
 export function createApp() {
   const app = express();
@@ -60,6 +61,7 @@ export function createApp() {
 
   v1.use("/admin", adminRouter);
   v1.use("/admin/contracts", adminContractsRouter);
+  v1.use("/bootstrap", bootstrapRouter);
 
   app.use("/api/v1", v1);
 

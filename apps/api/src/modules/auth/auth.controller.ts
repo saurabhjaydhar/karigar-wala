@@ -7,10 +7,14 @@ import {
 } from "../../utils/jwt";
 import { toPublicUser } from "../users/user.mapper";
 
+// web (*.vercel.app) and api (*.railway.app) are different sites in
+// production, so the auth cookie must be SameSite=None (which requires
+// Secure) to be sent on cross-site fetch() calls; local dev keeps Lax
+// since browsers reject SameSite=None on non-HTTPS origins.
 const baseCookieOptions: CookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: "lax",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   path: "/",
 };
 

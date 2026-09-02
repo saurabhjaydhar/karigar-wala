@@ -50,6 +50,20 @@ const CATEGORIES = [
     startingPrice: 249,
     isNew: true,
   },
+  {
+    name: "Plumber",
+    slug: "plumber",
+    description: "Pipe fitting, leak repairs, and bathroom/kitchen plumbing.",
+    startingPrice: 199,
+    isNew: true,
+  },
+  {
+    name: "Painter",
+    slug: "painter",
+    description: "Interior and exterior wall painting and touch-ups.",
+    startingPrice: 349,
+    isNew: true,
+  },
 ];
 
 // Real launch cities (per the business), each broken into a few broad zones.
