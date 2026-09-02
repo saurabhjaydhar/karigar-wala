@@ -2,6 +2,7 @@ import { Router } from "express";
 import bcrypt from "bcryptjs";
 import { AdminModel } from "../../db/models/admin.model";
 import { ServiceCategoryModel } from "../../db/models/service-category.model";
+import { UserModel } from "../../db/models/user.model";
 
 // One-time production setup endpoint (create the first admin + seed
 // categories) for environments where the DB has no private-network access
@@ -91,6 +92,21 @@ bootstrapRouter.post("/", async (req, res, next) => {
     }
 
     res.json({ admin: admin!.email, categoriesSeeded });
+  } catch (err) {
+    next(err);
+  }
+});
+
+bootstrapRouter.get("/users", async (req, res, next) => {
+  try {
+    const secret = req.header("x-bootstrap-secret");
+    if (!process.env.BOOTSTRAP_SECRET || secret !== process.env.BOOTSTRAP_SECRET) {
+      res.status(404).end();
+      return;
+    }
+
+    const users = await UserModel.find({}, "phone name isVerified createdAt").lean();
+    res.json({ count: users.length, users });
   } catch (err) {
     next(err);
   }
