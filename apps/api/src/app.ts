@@ -23,6 +23,11 @@ import { adminRouter } from "./modules/admin/admin.routes";
 export function createApp() {
   const app = express();
 
+  // Railway (and most PaaS) sit the app behind a reverse proxy that sets
+  // X-Forwarded-For; without this, express-rate-limit can't safely derive
+  // the real client IP and throws ERR_ERL_UNEXPECTED_X_FORWARDED_FOR.
+  app.set("trust proxy", 1);
+
   app.use(helmet());
   app.use(
     cors({
