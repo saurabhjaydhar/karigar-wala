@@ -1,14 +1,14 @@
 import { HelpCircle } from "lucide-react";
-import { fetchPageContent } from "@/lib/api/content";
+import { getLocale } from "next-intl/server";
+import { FAQ_CONTENT } from "@/lib/static-content";
 import { PageHeader } from "@/components/ui/page-header";
 import { Reveal } from "@/components/ui/reveal";
 import { AccordionItem } from "@/components/ui/accordion";
 import { BackgroundBubbles } from "@/components/ui/background-bubbles";
 
-export const dynamic = "force-dynamic";
-
 export default async function FaqPage() {
-  const content = await fetchPageContent("faq");
+  const locale = await getLocale();
+  const content = FAQ_CONTENT[locale === "hi" ? "hi" : "en"];
 
   return (
     <div className="relative mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">

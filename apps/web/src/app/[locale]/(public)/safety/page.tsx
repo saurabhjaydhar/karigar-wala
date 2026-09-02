@@ -1,11 +1,10 @@
 import { ShieldCheck, PhoneCall, Star, MessageCircleWarning, type LucideIcon } from "lucide-react";
-import { fetchPageContent } from "@/lib/api/content";
+import { getLocale } from "next-intl/server";
+import { SAFETY_CONTENT } from "@/lib/static-content";
 import { PageHeader } from "@/components/ui/page-header";
 import { Reveal } from "@/components/ui/reveal";
 import { BackgroundBubbles } from "@/components/ui/background-bubbles";
 import { cn } from "@/lib/utils";
-
-export const dynamic = "force-dynamic";
 
 const ICONS: LucideIcon[] = [ShieldCheck, PhoneCall, Star, MessageCircleWarning];
 
@@ -27,7 +26,8 @@ const ACCENTS = [
 ] as const;
 
 export default async function SafetyPage() {
-  const content = await fetchPageContent("safety");
+  const locale = await getLocale();
+  const content = SAFETY_CONTENT[locale === "hi" ? "hi" : "en"];
 
   return (
     <div className="relative mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
