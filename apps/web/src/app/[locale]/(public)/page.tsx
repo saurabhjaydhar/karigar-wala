@@ -4,7 +4,6 @@ import { ShieldCheck, Star, BadgeCheck, Wallet, Sparkles, ArrowRight, Phone } fr
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionError } from "@/components/ui/section-error";
 import { CategoryIcon } from "@/lib/category-icons";
@@ -176,94 +175,59 @@ export default async function HomePage() {
             <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </Reveal>
-        <div className="-mx-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-3 pb-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:overflow-visible sm:px-0 lg:grid-cols-5">
-          {categories.map((category, i) => {
-            const image = getCategoryImage(category.slug);
-            const accent = CATEGORY_ACCENTS[i % CATEGORY_ACCENTS.length];
-            return (
-              <Reveal
-                key={category._id}
-                delay={Math.min(i * 0.06, 0.3)}
-                className="shrink-0 snap-start sm:shrink"
-              >
-                <Link
-                  href={`/services/${category.slug}`}
-                  className={cn(
-                    "group relative flex h-40 w-32 flex-col overflow-hidden rounded-2xl border border-black/10 p-3 transition-all duration-300 hover:-translate-y-1 hover:border-transparent hover:shadow-xl hover:shadow-brand-navy-900/10 dark:border-white/10 dark:hover:shadow-black/30 sm:h-auto sm:w-auto sm:aspect-[4/5] sm:p-4",
-                    !image && cn("bg-gradient-to-br to-surface", accent.tint),
-                  )}
-                >
-                  {image ? (
-                    <>
-                      <Image
-                        src={image}
-                        alt=""
-                        fill
-                        sizes="(max-width: 640px) 128px, (max-width: 1024px) 33vw, 20vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-brand-navy-950/85 via-brand-navy-950/10 to-transparent" />
-                    </>
-                  ) : (
-                    <>
-                      <span
-                        aria-hidden
-                        className={cn("pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r", accent.bar)}
-                      />
-                      <CategoryIcon
-                        slug={category.slug}
-                        aria-hidden
-                        className="pointer-events-none absolute -bottom-4 -right-4 size-20 rotate-12 text-black/[0.04] transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110 dark:text-white/[0.05] sm:size-24"
-                      />
-                    </>
-                  )}
-
-                  <div className="relative z-10 flex items-start justify-between">
-                    <span
+        <div className="-mx-3 min-w-0 overflow-x-auto px-3 pb-1 sm:mx-0 sm:px-0">
+          <div className="flex w-max snap-x snap-mandatory gap-4 sm:gap-6">
+            {categories.map((category, i) => {
+              const image = getCategoryImage(category.slug);
+              const accent = CATEGORY_ACCENTS[i % CATEGORY_ACCENTS.length];
+              return (
+                <Reveal key={category._id} delay={Math.min(i * 0.06, 0.3)} className="shrink-0 snap-start">
+                  <Link href={`/services/${category.slug}`} className="group flex w-20 flex-col items-center gap-2 sm:w-24">
+                    <div
                       className={cn(
-                        "flex size-9 items-center justify-center rounded-xl text-white shadow-md transition-all duration-300 group-hover:-rotate-3 group-hover:scale-110 sm:size-11 sm:rounded-2xl",
-                        image ? "bg-white/20 backdrop-blur-sm" : cn("bg-gradient-to-br", accent.icon, accent.ring)
+                        "relative rounded-full bg-gradient-to-br p-[3px] shadow-md transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl",
+                        accent.icon,
                       )}
                     >
-                      <CategoryIcon slug={category.slug} className="size-4 sm:size-5" />
-                    </span>
-                    {category.isNew && (
-                      <Badge variant="brand" className="!px-1.5 !py-0.5 !text-[10px] sm:!px-2 sm:!py-0.5 sm:!text-xs">
-                        {tc("new")}
-                      </Badge>
-                    )}
-                  </div>
-
-                  <div className="relative z-10 mt-auto flex items-end justify-between gap-1">
-                    <div className="min-w-0">
-                      <p
-                        className={cn(
-                          "truncate text-sm font-semibold sm:text-base",
-                          image ? "text-white drop-shadow-sm" : "text-foreground",
+                      <div className="relative size-[72px] overflow-hidden rounded-full bg-surface ring-4 ring-background sm:size-24">
+                        {image ? (
+                          <Image
+                            src={image}
+                            alt=""
+                            fill
+                            sizes="96px"
+                            className="object-cover transition-transform duration-500 group-hover:scale-110"
+                          />
+                        ) : (
+                          <span
+                            className={cn(
+                              "flex size-full items-center justify-center bg-gradient-to-br text-white",
+                              accent.icon,
+                            )}
+                          >
+                            <CategoryIcon slug={category.slug} className="size-7 sm:size-9" />
+                          </span>
                         )}
-                      >
+                      </div>
+                      {category.isNew && (
+                        <span className="absolute -right-0.5 -top-0.5 flex size-6 items-center justify-center rounded-full bg-gradient-to-br from-brand-orange-500 to-brand-orange-600 text-white shadow-sm ring-2 ring-background">
+                          <Sparkles className="size-3" />
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-center">
+                      <p className="max-w-[5.5rem] truncate text-xs font-semibold text-foreground sm:max-w-[6rem] sm:text-sm">
                         {category.name}
                       </p>
-                      <p
-                        className={cn(
-                          "mt-0.5 text-[11px] sm:text-xs",
-                          image ? "text-white/85" : "text-slate-500 dark:text-slate-400",
-                        )}
-                      >
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400 sm:text-xs">
                         {t("fromPrice", { price: category.startingPrice })}
                       </p>
                     </div>
-                    <ArrowRight
-                      className={cn(
-                        "hidden size-4 shrink-0 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100 sm:block",
-                        image ? "text-white" : "text-brand-navy-400 dark:text-brand-orange-400"
-                      )}
-                    />
-                  </div>
-                </Link>
-              </Reveal>
-            );
-          })}
+                  </Link>
+                </Reveal>
+              );
+            })}
+          </div>
         </div>
       </div>
       )}
@@ -286,16 +250,18 @@ export default async function HomePage() {
               <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </Reveal>
-          <div className="-mx-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-3 pb-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:overflow-visible sm:px-0 lg:grid-cols-4">
-            {featuredKarigars.map((karigar, i) => (
-              <Reveal
-                key={karigar._id}
-                delay={Math.min(i * 0.06, 0.3)}
-                className="w-40 shrink-0 snap-start sm:w-auto sm:shrink"
-              >
-                <KarigarCard karigar={karigar} />
-              </Reveal>
-            ))}
+          <div className="-mx-3 min-w-0 overflow-x-auto px-3 pb-1 sm:mx-0 sm:px-0">
+            <div className="flex w-max snap-x snap-mandatory gap-3 sm:grid sm:w-auto sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+              {featuredKarigars.map((karigar, i) => (
+                <Reveal
+                  key={karigar._id}
+                  delay={Math.min(i * 0.06, 0.3)}
+                  className="w-40 shrink-0 snap-start sm:w-auto sm:shrink"
+                >
+                  <KarigarCard karigar={karigar} />
+                </Reveal>
+              ))}
+            </div>
           </div>
         </div>
       )}
