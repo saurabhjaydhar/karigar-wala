@@ -1,22 +1,15 @@
 "use client";
 
-import { useTransition } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { usePathname, useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+import { useLocaleSwitch } from "@/hooks/use-locale-switch";
 import { cn } from "@/lib/utils";
 
 export function LocaleSwitcher() {
-  const locale = useLocale();
-  const router = useRouter();
-  const pathname = usePathname();
+  const { locale, switchLocale, isPending } = useLocaleSwitch();
   const t = useTranslations("nav");
-  const [isPending, startTransition] = useTransition();
 
   function toggle() {
-    const next = locale === "en" ? "hi" : "en";
-    startTransition(() => {
-      router.replace(pathname, { locale: next, scroll: false });
-    });
+    switchLocale(locale === "en" ? "hi" : "en");
   }
 
   return (

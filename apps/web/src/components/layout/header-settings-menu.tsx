@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useSyncExternalStore, useTransition } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Palette, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useLocale, useTranslations } from "next-intl";
-import { usePathname, useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
+import { useLocaleSwitch } from "@/hooks/use-locale-switch";
 import { cn } from "@/lib/utils";
 
 const emptySubscribe = () => () => {};
@@ -14,10 +14,7 @@ export function HeaderSettingsMenu() {
   const t = useTranslations("nav");
   const [isOpen, setIsOpen] = useState(false);
   const { resolvedTheme, setTheme } = useTheme();
-  const locale = useLocale();
-  const router = useRouter();
-  const pathname = usePathname();
-  const [isPending, startTransition] = useTransition();
+  const { locale, switchLocale, isPending } = useLocaleSwitch();
 
   // Hydration-safe "has the client mounted yet" flag, same pattern as
   // ThemeToggle — avoids rendering a theme-dependent state before
@@ -28,13 +25,6 @@ export function HeaderSettingsMenu() {
     () => false,
   );
   const isDark = mounted && resolvedTheme === "dark";
-
-  function changeLocale(next: "en" | "hi") {
-    if (next === locale) return;
-    startTransition(() => {
-      router.replace(pathname, { locale: next, scroll: false });
-    });
-  }
 
   return (
     <div className="relative">
@@ -98,7 +88,7 @@ export function HeaderSettingsMenu() {
                 <button
                   type="button"
                   disabled={isPending}
-                  onClick={() => changeLocale("en")}
+                  onClick={() => switchLocale("en")}
                   className={cn(
                     "flex flex-1 items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors disabled:opacity-50",
                     locale === "en"
@@ -111,7 +101,7 @@ export function HeaderSettingsMenu() {
                 <button
                   type="button"
                   disabled={isPending}
-                  onClick={() => changeLocale("hi")}
+                  onClick={() => switchLocale("hi")}
                   className={cn(
                     "flex flex-1 items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors disabled:opacity-50",
                     locale === "hi"
