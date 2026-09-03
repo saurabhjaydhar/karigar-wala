@@ -9,17 +9,18 @@ import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { QuoteRequestForm } from "@/components/features/contracts/quote-request-form";
+import { SectionError } from "@/components/ui/section-error";
 import { isFullyVerified, type Karigar } from "@/types";
 import type { KarigarReviewItem } from "@/lib/api/reviews";
 
 export const dynamic = "force-dynamic";
 
-async function getKarigar(id: string): Promise<Karigar> {
+async function getKarigar(id: string): Promise<Karigar | null> {
   try {
     return await apiFetch<Karigar>(`/karigars/${id}`);
   } catch (err) {
     if (err instanceof ApiError && err.status === 404) notFound();
-    throw err;
+    return null;
   }
 }
 
@@ -28,6 +29,7 @@ export async function generateMetadata({
 }: PageProps<"/[locale]/karigars/[id]">): Promise<Metadata> {
   const { id } = await params;
   const karigar = await getKarigar(id);
+  if (!karigar) return { title: "Karigar Saathi" };
   return {
     title: `${karigar.name} — ${karigar.primarySkill} — Karigar Saathi`,
     description: `${karigar.name}, a verified ${karigar.primarySkill} serving ${karigar.areasServed.join(", ")}. Rated ${karigar.rating.toFixed(1)}/5 from ${karigar.reviewCount} reviews.`,
@@ -42,7 +44,20 @@ export default async function KarigarDetailPage({
   const tHome = await getTranslations("home");
   const tKarigarDetail = await getTranslations("karigarDetailPage");
   const karigar = await getKarigar(id);
-  const reviews = await apiFetch<KarigarReviewItem[]>(`/karigars/${id}/reviews`);
+
+  if (!karigar) {
+    return (
+      <div className="mx-auto max-w-4xl px-4 py-16">
+        <SectionError
+          title={tKarigarDetail("unavailableTitle")}
+          message={tKarigarDetail("unavailable")}
+          retryLabel={t("tryAgain")}
+        />
+      </div>
+    );
+  }
+
+  const reviews = await apiFetch<KarigarReviewItem[]>(`/karigars/${id}/reviews`).catch(() => []);
   const verified = isFullyVerified(karigar.verificationChecklist);
 
   const jsonLd = {

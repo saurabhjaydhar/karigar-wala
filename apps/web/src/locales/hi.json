@@ -29,6 +29,7 @@
     "bookNow": "अभी बुक करें",
     "bookThisKarigar": "इस कारीगर को बुक करें",
     "requestAQuote": "कोटेशन मांगें",
+    "tryAgain": "फिर कोशिश करें",
     "cancel": "रद्द करें",
     "save": "सेव करें",
     "saving": "सेव हो रहा है…",
@@ -65,6 +66,11 @@
     "categoriesHeading": "श्रेणियाँ",
     "karigarsHeading": "सर्वश्रेष्ठ रेटेड कारीगर",
     "trustedBadge": "आपके मोहल्ले का भरोसेमंद नाम",
+    "heroSlogan": "क्योंकि आपके घर को भरोसेमंद अपनों की ज़रूरत है",
+    "categoriesUnavailableTitle": "सिग्नल थोड़ा कमज़ोर है",
+    "categoriesUnavailable": "एक बार फिर कोशिश करें?",
+    "karigarsUnavailableTitle": "हमारे कारीगर छुप गए हैं",
+    "karigarsUnavailable": "वे बस थोड़ी देर में लौटेंगे।",
     "pointVerified": "4-सूत्रीय सत्यापित",
     "trustNoAdvance": "अग्रिम भुगतान नहीं",
     "couponText": "अपनी पहली बुकिंग पर 10% छूट — चेकआउट पर कोड लागू करें।",
@@ -233,6 +239,7 @@
     "fallbackName": "Karigar Saathi उपयोगकर्ता",
     "memberSince": "सदस्य बने",
     "manageAddresses": "सहेजे गए पते प्रबंधित करें",
+    "notifications": "सूचनाएं",
     "logOut": "लॉग आउट करें",
     "editProfile": "प्रोफ़ाइल संपादित करें",
     "trusted": "विश्वसनीय",
@@ -273,17 +280,25 @@
   },
   "servicesPage": {
     "pageTitle": "सेवाएं",
-    "pageSubtitle": "हमारे द्वारा कवर किए जाने वाले हर काम को देखें, सत्यापित और बुक करने के लिए तैयार।"
+    "pageSubtitle": "हमारे द्वारा कवर किए जाने वाले हर काम को देखें, सत्यापित और बुक करने के लिए तैयार।",
+    "categoriesUnavailableTitle": "सिग्नल थोड़ा कमज़ोर है",
+    "categoriesUnavailable": "एक बार फिर कोशिश करें?"
   },
   "karigarsPage": {
     "pageTitle": "कारीगर डायरेक्टरी",
-    "pageSubtitle": "आपके आस-पास के सत्यापित कारीगर और ठेकेदार।"
+    "pageSubtitle": "आपके आस-पास के सत्यापित कारीगर और ठेकेदार।",
+    "karigarsUnavailableTitle": "हमारे कारीगर छुप गए हैं",
+    "karigarsUnavailable": "वे बस थोड़ी देर में लौटेंगे।"
   },
   "serviceDetailPage": {
-    "whatWeOffer": "हम क्या प्रदान करते हैं"
+    "whatWeOffer": "हम क्या प्रदान करते हैं",
+    "unavailableTitle": "सिग्नल थोड़ा कमज़ोर है",
+    "unavailable": "यह सेवा लोड नहीं हो सकी — एक बार फिर कोशिश करें।"
   },
   "karigarDetailPage": {
-    "reviewsHeading": "रिव्यू"
+    "reviewsHeading": "रिव्यू",
+    "unavailableTitle": "सिग्नल थोड़ा कमज़ोर है",
+    "unavailable": "इस कारीगर की प्रोफ़ाइल लोड नहीं हो सकी — एक बार फिर कोशिश करें।"
   },
   "footer": {
     "headingCompany": "कंपनी",

@@ -29,6 +29,7 @@
     "bookNow": "Book Now",
     "bookThisKarigar": "Book this Karigar",
     "requestAQuote": "Request a Quote",
+    "tryAgain": "Try again",
     "cancel": "Cancel",
     "save": "Save",
     "saving": "Saving…",
@@ -65,6 +66,11 @@
     "categoriesHeading": "Categories",
     "karigarsHeading": "Top-rated karigars",
     "trustedBadge": "Trusted by your neighborhood",
+    "heroSlogan": "Because your home deserves people you can trust",
+    "categoriesUnavailableTitle": "Signal's a bit weak",
+    "categoriesUnavailable": "Give it another shot?",
+    "karigarsUnavailableTitle": "Our karigars are hiding",
+    "karigarsUnavailable": "They'll be back in a moment.",
     "pointVerified": "4-point verified",
     "trustNoAdvance": "Advance Payment",
     "couponText": "10% off your first booking — apply the code at checkout.",
@@ -233,6 +239,7 @@
     "fallbackName": "Karigar Saathi user",
     "memberSince": "Member since",
     "manageAddresses": "Manage saved addresses",
+    "notifications": "Notifications",
     "logOut": "Log out",
     "editProfile": "Edit profile",
     "trusted": "Trusted",
@@ -273,17 +280,25 @@
   },
   "servicesPage": {
     "pageTitle": "Services",
-    "pageSubtitle": "Browse every trade we cover, verified and ready to book."
+    "pageSubtitle": "Browse every trade we cover, verified and ready to book.",
+    "categoriesUnavailableTitle": "Signal's a bit weak",
+    "categoriesUnavailable": "Give it another shot?"
   },
   "karigarsPage": {
     "pageTitle": "Karigars Directory",
-    "pageSubtitle": "Verified karigars and contractors near you."
+    "pageSubtitle": "Verified karigars and contractors near you.",
+    "karigarsUnavailableTitle": "Our karigars are hiding",
+    "karigarsUnavailable": "They'll be back in a moment."
   },
   "serviceDetailPage": {
-    "whatWeOffer": "What we offer"
+    "whatWeOffer": "What we offer",
+    "unavailableTitle": "Signal's a bit weak",
+    "unavailable": "Couldn't load this service — give it another shot."
   },
   "karigarDetailPage": {
-    "reviewsHeading": "Reviews"
+    "reviewsHeading": "Reviews",
+    "unavailableTitle": "Signal's a bit weak",
+    "unavailable": "Couldn't load this karigar's profile — give it another shot."
   },
   "footer": {
     "headingCompany": "Company",

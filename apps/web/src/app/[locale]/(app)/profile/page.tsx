@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   BadgeCheck,
+  Bell,
   CalendarDays,
   Check,
   ChevronRight,
@@ -24,6 +25,8 @@ import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Input, Label } from "@/components/ui/input";
 import { PageHeader } from "@/components/ui/page-header";
+import { Reveal } from "@/components/ui/reveal";
+import { BackgroundBubbles } from "@/components/ui/background-bubbles";
 import { logout, updateProfile, type CurrentUser } from "@/lib/api/auth";
 import { ApiError } from "@/lib/api-client";
 
@@ -145,39 +148,60 @@ export default function ProfilePage() {
   return (
     <RequireAuth>
       {(user) => (
-        <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+        <div className="relative mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12">
+          <BackgroundBubbles />
           <PageHeader title={t("pageTitle")} subtitle={t("pageSubtitle")} />
 
-          <div className="mt-6">
-            <ProfileHeader user={user} />
-          </div>
-
-          <Card className="mt-4 flex flex-col divide-y divide-black/5 p-0 dark:divide-white/5">
-            <div className="flex items-center gap-3 p-4 text-sm">
-              <CalendarDays className="size-4 shrink-0 text-slate-400" />
-              <span className="text-slate-500 dark:text-slate-400">{t("memberSince")}</span>
-              <span className="ml-auto font-medium text-foreground">
-                {new Date(user.memberSince).toLocaleDateString()}
-              </span>
+          <Reveal delay={0}>
+            <div className="mt-6">
+              <ProfileHeader user={user} />
             </div>
-            <Link
-              href="/addresses"
-              className="group flex items-center gap-3 p-4 text-sm transition-colors hover:bg-black/[0.02] dark:hover:bg-white/[0.03]"
-            >
-              <MapPin className="size-4 shrink-0 text-slate-400" />
-              <span className="font-medium text-brand-navy-700 dark:text-brand-orange-400">
-                {t("manageAddresses")}
+          </Reveal>
+
+          <Reveal delay={0.06}>
+            <Card className="mt-4 flex flex-col divide-y divide-black/5 p-0 dark:divide-white/5">
+              <div className="flex items-center gap-3 p-4 text-sm">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-navy-50 text-brand-navy-700 dark:bg-white/5 dark:text-brand-orange-300">
+                  <CalendarDays className="size-4" />
+                </span>
+                <span className="text-slate-500 dark:text-slate-400">{t("memberSince")}</span>
+                <span className="ml-auto font-medium text-foreground">
+                  {new Date(user.memberSince).toLocaleDateString()}
+                </span>
+              </div>
+              <Link
+                href="/addresses"
+                className="group flex items-center gap-3 p-4 text-sm transition-colors hover:bg-black/[0.02] dark:hover:bg-white/[0.03]"
+              >
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-navy-50 text-brand-navy-700 dark:bg-white/5 dark:text-brand-orange-300">
+                  <MapPin className="size-4" />
+                </span>
+                <span className="font-medium text-brand-navy-700 dark:text-brand-orange-400">
+                  {t("manageAddresses")}
+                </span>
+                <ChevronRight className="ml-auto size-4 text-slate-400 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </Card>
+          </Reveal>
+
+          <Reveal delay={0.12}>
+            <Card className="mt-4 flex items-center gap-3 p-4">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-navy-50 text-brand-navy-700 dark:bg-white/5 dark:text-brand-orange-300">
+                <Bell className="size-4" />
               </span>
-              <ChevronRight className="ml-auto size-4 text-slate-400 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-          </Card>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-foreground">{t("notifications")}</p>
+                <PushToggle />
+              </div>
+            </Card>
+          </Reveal>
 
-          <PushToggle />
-
-          <Button variant="outline" className="mt-6 text-red-600 hover:bg-red-500/10" onClick={handleLogout}>
-            <LogOut className="size-4" />
-            {t("logOut")}
-          </Button>
+          <Reveal delay={0.18}>
+            <Button variant="outline" className="mt-6 text-red-600 hover:bg-red-500/10" onClick={handleLogout}>
+              <LogOut className="size-4" />
+              {t("logOut")}
+            </Button>
+          </Reveal>
         </div>
       )}
     </RequireAuth>

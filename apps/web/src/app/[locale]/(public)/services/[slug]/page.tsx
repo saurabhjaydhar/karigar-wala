@@ -6,17 +6,18 @@ import { SITE_URL } from "@/lib/constants";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { SectionError } from "@/components/ui/section-error";
 import { CategoryIcon } from "@/lib/category-icons";
 import type { ServiceCategory, SubService } from "@/types";
 
 export const dynamic = "force-dynamic";
 
-async function getService(slug: string): Promise<ServiceCategory> {
+async function getService(slug: string): Promise<ServiceCategory | null> {
   try {
     return await apiFetch<ServiceCategory>(`/services/${slug}`);
   } catch (err) {
     if (err instanceof ApiError && err.status === 404) notFound();
-    throw err;
+    return null;
   }
 }
 
@@ -25,6 +26,7 @@ export async function generateMetadata({
 }: PageProps<"/[locale]/services/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const service = await getService(slug);
+  if (!service) return { title: "Karigar Saathi" };
   return {
     title: `${service.name} — Karigar Saathi`,
     description: service.description ?? `Book a verified ${service.name} near you.`,
@@ -38,7 +40,22 @@ export default async function ServiceDetailPage({
   const t = await getTranslations("common");
   const tService = await getTranslations("serviceDetailPage");
   const service = await getService(slug);
-  const subServices = await apiFetch<SubService[]>(`/services/${service._id}/sub-services`);
+
+  if (!service) {
+    return (
+      <div className="mx-auto max-w-4xl px-4 py-16">
+        <SectionError
+          title={tService("unavailableTitle")}
+          message={tService("unavailable")}
+          retryLabel={t("tryAgain")}
+        />
+      </div>
+    );
+  }
+
+  const subServices = await apiFetch<SubService[]>(`/services/${service._id}/sub-services`).catch(
+    () => [],
+  );
 
   const jsonLd = {
     "@context": "https://schema.org",

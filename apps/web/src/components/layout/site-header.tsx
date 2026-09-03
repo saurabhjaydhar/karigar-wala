@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Menu, Search } from "lucide-react";
+import { Menu, Search, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { NotificationsBell } from "@/components/features/notifications/notifications-bell";
@@ -67,7 +67,7 @@ export function SiteHeader() {
           </nav>
 
           <div className="ml-auto flex items-center gap-1">
-            <div className="flex items-center gap-1 lg:hidden">
+            <div className="hidden items-center gap-1 md:flex lg:hidden">
               <LocaleSwitcher />
               <ThemeToggle />
             </div>
@@ -81,6 +81,7 @@ export function SiteHeader() {
             <NotificationsBell />
             <Link href="/book" className="hidden md:block lg:hidden">
               <Button size="sm" className="ml-1">
+                <Phone className="size-3.5" />
                 {tc("bookACarigar")}
               </Button>
             </Link>

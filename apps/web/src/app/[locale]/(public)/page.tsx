@@ -1,11 +1,12 @@
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
-import { ShieldCheck, Star, BadgeCheck, Wallet, Sparkles, ArrowRight } from "lucide-react";
+import { ShieldCheck, Star, BadgeCheck, Wallet, Sparkles, ArrowRight, Phone } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/ui/reveal";
+import { SectionError } from "@/components/ui/section-error";
 import { CategoryIcon } from "@/lib/category-icons";
 import { getCategoryImage } from "@/lib/category-images";
 import { HeroVisual } from "@/components/features/home/hero-visual";
@@ -37,15 +38,18 @@ const CATEGORY_ACCENTS = [
 export default async function HomePage() {
   const t = await getTranslations("home");
   const tc = await getTranslations("common");
-  const [categories, karigars, feedback] = await Promise.all([
+  const [categoriesResult, karigarsResult, feedbackResult] = await Promise.allSettled([
     apiFetch<ServiceCategory[]>("/services"),
     apiFetch<Karigar[]>("/karigars"),
     apiFetch<FeaturedReviewItem[]>("/reviews/featured"),
   ]);
-  const featuredKarigars = karigars.slice(0, FEATURED_KARIGAR_COUNT);
+  const categories = categoriesResult.status === "fulfilled" ? categoriesResult.value : null;
+  const karigars = karigarsResult.status === "fulfilled" ? karigarsResult.value : null;
+  const feedback = feedbackResult.status === "fulfilled" ? feedbackResult.value : [];
+  const featuredKarigars = karigars?.slice(0, FEATURED_KARIGAR_COUNT) ?? [];
 
   return (
-    <div className="mx-auto flex max-w-7xl flex-col gap-6 px-3 py-3 sm:gap-12 sm:px-6 sm:py-12 lg:px-8 2xl:max-w-[96rem] 2xl:px-12">
+    <div className="mx-auto flex max-w-7xl flex-col gap-4 px-3 py-3 sm:gap-12 sm:px-6 sm:py-12 lg:px-8 2xl:max-w-[96rem] 2xl:px-12">
       <section className="relative">
         <div
           aria-hidden
@@ -58,10 +62,14 @@ export default async function HomePage() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center"
+          className="object-cover object-center brightness-105 saturate-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-navy-950/80 via-brand-navy-950/45 to-brand-navy-900/10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-navy-950/60 via-transparent to-transparent" />
+        {/* Flat tint (mix-blend-multiply) gives every piece of text a consistent,
+            predictable backdrop regardless of what's underneath, instead of only
+            the gradient's darker band — the gradient alone left the top of the
+            image unprotected, which is why text could blend into the photo. */}
+        <div className="absolute inset-0 bg-brand-navy-950/40 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-navy-950/40 via-transparent to-transparent" />
 
         <Sparkles
           aria-hidden
@@ -74,55 +82,69 @@ export default async function HomePage() {
 
         <Card
           variant="glass"
-          className="relative grid gap-4 !rounded-3xl !border-white/10 !bg-brand-navy-950/35 px-4 py-5 !backdrop-blur-xl shadow-2xl shadow-black/40 sm:gap-6 sm:px-10 sm:py-14 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:px-16 lg:py-16"
+          className="relative grid gap-3 !rounded-3xl !border-white/10 !bg-brand-navy-950/5 px-4 py-4 !backdrop-blur-none shadow-2xl shadow-black/40 sm:gap-6 sm:px-10 sm:py-14 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:px-16 lg:py-16"
         >
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"
           />
-          <div className="flex flex-col items-start gap-4 sm:gap-6">
-            <span className="relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-gradient-to-r from-brand-orange-500 to-brand-orange-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg shadow-brand-orange-900/30 ring-1 ring-white/30 lg:text-sm">
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 animate-shimmer bg-gradient-to-r from-transparent via-white/50 to-transparent"
-              />
-              <Sparkles className="relative size-3.5 shrink-0" />
-              <span className="relative">{t("trustedBadge")}</span>
-            </span>
-            <h1 className="max-w-xl animate-gradient-x bg-[length:200%_auto] bg-gradient-to-r from-white via-brand-orange-200 to-white bg-clip-text text-4xl font-extrabold leading-[1.1] tracking-tight text-transparent drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] sm:text-5xl lg:text-6xl">
-              {t.rich("heroTitle", {
-                trusted: (chunks) => <span className="text-emerald-400">{chunks}</span>,
-                local: (chunks) => <span className="text-yellow-300">{chunks}</span>,
-              })}
-            </h1>
-            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-2.5">
+          <div className="flex flex-col items-start gap-3 sm:gap-6">
+            <Reveal>
+              <span className="relative inline-flex items-center gap-1.5 overflow-hidden rounded-full border border-white/30 bg-white/10 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg shadow-black/10 backdrop-blur-md lg:text-sm">
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 animate-shimmer bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                />
+                <Sparkles className="relative size-3.5 shrink-0 text-brand-orange-300" />
+                <span className="relative">{t("trustedBadge")}</span>
+              </span>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <h1 className="max-w-xl animate-gradient-x bg-[length:200%_auto] bg-gradient-to-r from-white via-brand-orange-200 to-white bg-clip-text text-3xl font-extrabold leading-[1.15] tracking-tight text-transparent drop-shadow-[0_3px_16px_rgba(0,0,0,0.7)] sm:text-5xl sm:leading-[1.1] lg:text-6xl">
+                {t.rich("heroTitle", {
+                  trusted: (chunks) => <span className="text-green-400">{chunks}</span>,
+                  local: (chunks) => <span className="text-yellow-300">{chunks}</span>,
+                })}
+              </h1>
+            </Reveal>
+            <Reveal delay={0.16} className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-2.5">
               {TRUST_ITEMS.map(({ icon: Icon, prefixKey, prefix, captionKey }) => (
                 <span
                   key={prefixKey ?? prefix}
-                  className="inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-white/15 bg-white/10 py-1.5 pl-1.5 pr-3 shadow-sm backdrop-blur-sm sm:w-auto sm:justify-start"
+                  className="inline-flex w-full items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-3 py-2 shadow-sm backdrop-blur-sm sm:w-auto sm:gap-1.5 sm:rounded-full sm:py-1.5 sm:pl-1.5 sm:pr-3"
                 >
-                  <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-orange-500 to-brand-orange-600 text-white shadow-sm">
+                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-orange-500 to-brand-orange-600 text-white shadow-sm sm:size-6">
                     <Icon className="size-3.5" />
                   </span>
-                  <span className="whitespace-nowrap text-xs font-semibold text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)] sm:text-sm">
-                    {prefixKey ? t(prefixKey) : prefix}
+                  <span className="flex min-w-0 flex-col leading-tight sm:flex-row sm:items-center sm:gap-1">
+                    <span className="text-[11px] font-bold text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)] sm:whitespace-nowrap sm:text-sm sm:font-semibold">
+                      {prefixKey ? t(prefixKey) : prefix}
+                    </span>
                     {captionKey && (
-                      <span className="ml-1 hidden font-normal text-white/75 sm:inline">{t(captionKey)}</span>
+                      <span className="text-[10px] font-medium leading-tight text-white/80 sm:text-xs sm:font-normal sm:text-white/75">
+                        {t(captionKey)}
+                      </span>
                     )}
                   </span>
                 </span>
               ))}
-            </div>
-            <Link href="/book" className="group/cta">
-              <Button
-                variant="secondary"
-                size="lg"
-                className="!bg-none !bg-[rgb(244,166,35)] lg:px-8 lg:py-4 lg:text-lg"
-              >
-                {t("cta")}
-                <ArrowRight className="size-4 transition-transform duration-300 group-hover/cta:translate-x-1" />
-              </Button>
-            </Link>
+            </Reveal>
+            <Reveal delay={0.24} className="flex flex-col items-start gap-2">
+              <Link href="/book" className="group/cta">
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="!rounded-xl !bg-none !bg-[rgb(244,166,35)] !py-2.5 lg:px-8 lg:!py-4 lg:text-lg"
+                >
+                  <Phone className="size-4 transition-transform duration-300 group-hover/cta:-rotate-12" />
+                  {t("cta")}
+                </Button>
+              </Link>
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-white/80 sm:text-xs">
+                <ShieldCheck className="size-3.5 shrink-0 text-emerald-400" />
+                {t("heroSlogan")}
+              </span>
+            </Reveal>
           </div>
           <HeroVisual />
         </Card>
@@ -136,6 +158,13 @@ export default async function HomePage() {
         />
       </Reveal>
 
+      {categories === null ? (
+        <SectionError
+          title={t("categoriesUnavailableTitle")}
+          message={t("categoriesUnavailable")}
+          retryLabel={tc("tryAgain")}
+        />
+      ) : (
       <div className="flex min-w-0 flex-col gap-4 sm:gap-5">
         <Reveal className="flex items-end justify-between">
           <h2 className="text-lg font-semibold sm:text-xl lg:text-2xl">{t("categoriesHeading")}</h2>
@@ -219,8 +248,15 @@ export default async function HomePage() {
           })}
         </div>
       </div>
+      )}
 
-      {featuredKarigars.length > 0 && (
+      {karigars === null ? (
+        <SectionError
+          title={t("karigarsUnavailableTitle")}
+          message={t("karigarsUnavailable")}
+          retryLabel={tc("tryAgain")}
+        />
+      ) : featuredKarigars.length > 0 && (
         <div className="flex min-w-0 flex-col gap-4 sm:gap-5">
           <Reveal className="flex items-end justify-between">
             <h2 className="text-lg font-semibold sm:text-xl lg:text-2xl">{t("karigarsHeading")}</h2>

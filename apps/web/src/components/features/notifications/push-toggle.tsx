@@ -83,10 +83,11 @@ export function PushToggle() {
   if (!supported) return null;
 
   return (
-    <div className="mt-4 flex flex-col gap-1">
+    <div className="mt-1.5 flex flex-col gap-1">
       <Button
         type="button"
         variant="secondary"
+        size="sm"
         loading={busy}
         onClick={subscribed ? handleDisable : handleEnable}
         className="self-start"
