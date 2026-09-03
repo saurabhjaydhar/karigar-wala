@@ -156,7 +156,11 @@
     "amountOff": "₹{value} छूट",
     "promoHint": "प्रोमो कोड है? इसे ऊपर दर्ज करें।",
     "submitting": "बुकिंग हो रही है…",
-    "confirmBooking": "बुकिंग की पुष्टि करें"
+    "confirmBooking": "बुकिंग की पुष्टि करें",
+    "sectionService": "आपको क्या चाहिए?",
+    "sectionKarigar": "कौन करेगा काम?",
+    "sectionAddress": "कहाँ और कब?",
+    "sectionCoupon": "कूपन है?"
   },
   "partner": {
     "pageTitle": "हमारे साथ जुड़ें",

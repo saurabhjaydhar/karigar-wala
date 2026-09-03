@@ -3,12 +3,23 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
-import { CheckCircle2, Tag } from "lucide-react";
+import {
+  CalendarCheck,
+  CheckCircle2,
+  MapPinned,
+  Tag,
+  Wrench,
+  Zap,
+  UserCheck,
+  Check,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Reveal } from "@/components/ui/reveal";
 import { Input, Select, Label } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useServices } from "@/hooks/use-services";
 import { useSubServices } from "@/hooks/use-sub-services";
@@ -22,6 +33,15 @@ import { ApiError } from "@/lib/api-client";
 import { TIME_SLOTS } from "@/lib/constants";
 
 type KarigarMode = "auto" | "specific";
+
+function SectionHeader({ icon: Icon, children }: { icon: typeof Wrench; children: string }) {
+  return (
+    <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+      <Icon className="size-3.5" />
+      {children}
+    </p>
+  );
+}
 
 export function BookingForm() {
   const t = useTranslations("booking");
@@ -145,7 +165,9 @@ export function BookingForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <Reveal>
       <Card className="flex flex-col gap-4">
+        <SectionHeader icon={Wrench}>{t("sectionService")}</SectionHeader>
         <Label>
           {t("serviceType")}
           <Select
@@ -179,13 +201,14 @@ export function BookingForm() {
                 return (
                   <label
                     key={service._id}
-                    className={`flex cursor-pointer items-center justify-between gap-2 rounded-xl border px-3 py-2.5 transition-colors ${
+                    className={cn(
+                      "flex cursor-pointer items-center justify-between gap-2 rounded-xl border px-3 py-2.5 transition-all duration-200",
                       checked
-                        ? "border-brand-navy-300 bg-brand-navy-50 dark:border-brand-navy-400/50 dark:bg-brand-navy-900/30"
-                        : "border-black/10 dark:border-white/10"
-                    }`}
+                        ? "border-transparent bg-gradient-to-r from-brand-navy-50 to-brand-orange-50 shadow-sm dark:from-brand-navy-900/40 dark:to-white/[0.04]"
+                        : "border-black/10 hover:border-black/20 dark:border-white/10 dark:hover:border-white/20",
+                    )}
                   >
-                    <span className="flex items-center gap-2">
+                    <span className="flex items-center gap-2.5">
                       <input
                         type="checkbox"
                         checked={checked}
@@ -196,8 +219,18 @@ export function BookingForm() {
                               : prev.filter((id) => id !== service._id),
                           )
                         }
-                        className="size-4 accent-brand-navy-600"
+                        className="peer sr-only"
                       />
+                      <span
+                        className={cn(
+                          "flex size-4.5 shrink-0 items-center justify-center rounded-md border transition-all duration-200",
+                          checked
+                            ? "border-transparent bg-gradient-to-br from-brand-navy-600 to-brand-navy-800 text-white"
+                            : "border-black/20 dark:border-white/25",
+                        )}
+                      >
+                        {checked && <Check className="size-3" strokeWidth={3} />}
+                      </span>
                       {service.name}
                     </span>
                     <span className="text-xs text-slate-500 dark:text-slate-400">
@@ -222,42 +255,64 @@ export function BookingForm() {
           </Select>
         </Label>
       </Card>
+      </Reveal>
 
+      <Reveal delay={0.08}>
       <Card className="flex flex-col gap-3">
-        <fieldset className="flex flex-col gap-2 text-sm">
-          <legend className="mb-1 font-medium">{t("karigar")}</legend>
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              checked={karigarMode === "auto"}
-              onChange={() => setKarigarMode("auto")}
-              className="accent-brand-navy-600"
-            />
-            {t("autoAssign")}
-          </label>
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              checked={karigarMode === "specific"}
-              onChange={() => setKarigarMode("specific")}
-              className="accent-brand-navy-600"
-            />
-            {t("chooseSpecificKarigar")}
-          </label>
-          {karigarMode === "specific" && (
-            <Select value={karigarId} onChange={(e) => setKarigarId(e.target.value)}>
-              <option value="">{t("selectKarigar")}</option>
-              {karigars?.map((k) => (
-                <option key={k._id} value={k._id}>
-                  {k.name} — ⭐ {k.rating.toFixed(1)}
-                </option>
-              ))}
-            </Select>
-          )}
-        </fieldset>
+        <SectionHeader icon={UserCheck}>{t("sectionKarigar")}</SectionHeader>
+        <div className="grid grid-cols-2 gap-3">
+          {(
+            [
+              { value: "auto" as const, label: t("autoAssign"), icon: Zap },
+              { value: "specific" as const, label: t("chooseSpecificKarigar"), icon: UserCheck },
+            ]
+          ).map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => setKarigarMode(option.value)}
+              className={cn(
+                "relative flex flex-col items-center gap-2 rounded-xl border px-3 py-4 text-center text-sm transition-all duration-200",
+                karigarMode === option.value
+                  ? "border-transparent bg-gradient-to-br from-brand-navy-600 to-brand-navy-800 text-white shadow-md shadow-brand-navy-900/20"
+                  : "border-black/10 text-foreground/80 hover:-translate-y-0.5 hover:border-black/20 hover:shadow-sm dark:border-white/10 dark:hover:border-white/20",
+              )}
+            >
+              {karigarMode === option.value && (
+                <span className="absolute -right-1.5 -top-1.5 flex size-5 items-center justify-center rounded-full bg-emerald-500 text-white shadow ring-2 ring-white dark:ring-brand-navy-950">
+                  <Check className="size-3" strokeWidth={3} />
+                </span>
+              )}
+              <span
+                className={cn(
+                  "flex size-9 items-center justify-center rounded-full",
+                  karigarMode === option.value
+                    ? "bg-white/15 text-white"
+                    : "bg-brand-navy-50 text-brand-navy-700 dark:bg-white/5 dark:text-brand-orange-300",
+                )}
+              >
+                <option.icon className="size-4.5" />
+              </span>
+              <span className="font-medium">{option.label}</span>
+            </button>
+          ))}
+        </div>
+        {karigarMode === "specific" && (
+          <Select value={karigarId} onChange={(e) => setKarigarId(e.target.value)}>
+            <option value="">{t("selectKarigar")}</option>
+            {karigars?.map((k) => (
+              <option key={k._id} value={k._id}>
+                {k.name} — ⭐ {k.rating.toFixed(1)}
+              </option>
+            ))}
+          </Select>
+        )}
       </Card>
+      </Reveal>
 
+      <Reveal delay={0.16}>
       <Card className="flex flex-col gap-3">
+        <SectionHeader icon={MapPinned}>{t("sectionAddress")}</SectionHeader>
         <div className="grid grid-cols-2 gap-3">
           <Label>
             {t("addressLabel")}
@@ -300,8 +355,11 @@ export function BookingForm() {
           </Label>
         </div>
       </Card>
+      </Reveal>
 
+      <Reveal delay={0.24}>
       <Card className="flex flex-col gap-2">
+        <SectionHeader icon={Tag}>{t("sectionCoupon")}</SectionHeader>
         <Label>
           {t("couponCodeOptional")}
           <div className="flex gap-2">
@@ -343,18 +401,24 @@ export function BookingForm() {
         </AnimatePresence>
         {couponError && <p className="text-xs text-red-600">{couponError}</p>}
         {!appliedCoupon && !couponError && (
-          <p className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
-            <Tag className="size-3.5" />
-            {t("promoHint")}
-          </p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">{t("promoHint")}</p>
         )}
       </Card>
+      </Reveal>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      <Button type="submit" size="lg" disabled={submitting} className="sticky bottom-4">
-        {submitting ? t("submitting") : t("confirmBooking")}
-      </Button>
+      <Reveal delay={0.3}>
+        <Button
+          type="submit"
+          size="lg"
+          disabled={submitting}
+          className="sticky bottom-4 w-full gap-2 shadow-lg shadow-brand-navy-900/20"
+        >
+          <CalendarCheck className="size-4.5" />
+          {submitting ? t("submitting") : t("confirmBooking")}
+        </Button>
+      </Reveal>
     </form>
   );
 }

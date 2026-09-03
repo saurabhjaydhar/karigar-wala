@@ -156,7 +156,11 @@
     "amountOff": "₹{value} off",
     "promoHint": "Have a promo code? Enter it above.",
     "submitting": "Booking…",
-    "confirmBooking": "Confirm booking"
+    "confirmBooking": "Confirm booking",
+    "sectionService": "What do you need?",
+    "sectionKarigar": "Who should do it?",
+    "sectionAddress": "Where & when?",
+    "sectionCoupon": "Got a coupon?"
   },
   "partner": {
     "pageTitle": "Partner with Us",
