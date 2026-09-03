@@ -161,6 +161,28 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
+/* A thin, always-visible, branded horizontal scrollbar for carousel-style
+   rows (category/karigar strips) — the default browser scrollbar is either
+   invisible (touch devices) or visually heavy (desktop), neither of which
+   signals "this scrolls" clearly. */
+.scroll-x-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--brand-orange-400) transparent;
+}
+
+.scroll-x-thin::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scroll-x-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-x-thin::-webkit-scrollbar-thumb {
+  background-color: var(--brand-orange-400);
+  border-radius: 9999px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

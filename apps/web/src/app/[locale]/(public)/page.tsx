@@ -175,7 +175,7 @@ export default async function HomePage() {
             <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </Reveal>
-        <div className="-mx-3 min-w-0 overflow-x-auto px-3 pb-1 sm:mx-0 sm:px-0">
+        <div className="scroll-x-thin -mx-3 min-w-0 overflow-x-auto px-3 pb-1 sm:mx-0 sm:px-0">
           <div className="flex w-max snap-x snap-mandatory gap-4 sm:gap-6">
             {categories.map((category, i) => {
               const image = getCategoryImage(category.slug);
@@ -250,7 +250,7 @@ export default async function HomePage() {
               <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </Reveal>
-          <div className="-mx-3 min-w-0 overflow-x-auto px-3 pb-1 sm:mx-0 sm:px-0">
+          <div className="scroll-x-thin -mx-3 min-w-0 overflow-x-auto px-3 pb-1 sm:mx-0 sm:px-0">
             <div className="flex w-max snap-x snap-mandatory gap-3 sm:grid sm:w-auto sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
               {featuredKarigars.map((karigar, i) => (
                 <Reveal

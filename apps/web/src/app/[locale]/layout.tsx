@@ -28,9 +28,9 @@ export default async function LocaleLayout({
       <LocaleHtmlSync />
       <div className="flex flex-1">
         <SiteSidebar />
-        <div className="flex flex-1 flex-col">
+        <div className="flex min-w-0 flex-1 flex-col">
           <SiteHeader />
-          <main className="flex-1">
+          <main className="min-w-0 flex-1">
             {children}
             <SiteFooter />
           </main>
