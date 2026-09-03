@@ -22,7 +22,11 @@
     "moreSection": "More",
     "toggleLanguage": "Toggle language",
     "toggleTheme": "Toggle theme",
-    "chatOnWhatsapp": "Chat on WhatsApp"
+    "chatOnWhatsapp": "Chat on WhatsApp",
+    "light": "Light",
+    "dark": "Dark",
+    "english": "English",
+    "hindi": "हिंदी"
   },
   "common": {
     "bookACarigar": "Book a Karigar",

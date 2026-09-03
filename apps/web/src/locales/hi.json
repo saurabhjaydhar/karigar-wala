@@ -22,7 +22,11 @@
     "moreSection": "अधिक",
     "toggleLanguage": "भाषा बदलें",
     "toggleTheme": "थीम बदलें",
-    "chatOnWhatsapp": "व्हाट्सएप पर चैट करें"
+    "chatOnWhatsapp": "व्हाट्सएप पर चैट करें",
+    "light": "लाइट",
+    "dark": "डार्क",
+    "english": "English",
+    "hindi": "हिंदी"
   },
   "common": {
     "bookACarigar": "कारीगर बुक करें",

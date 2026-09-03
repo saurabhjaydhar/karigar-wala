@@ -176,16 +176,20 @@ export default async function HomePage() {
             <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </Reveal>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="-mx-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-3 pb-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:overflow-visible sm:px-0 lg:grid-cols-5">
           {categories.map((category, i) => {
             const image = getCategoryImage(category.slug);
             const accent = CATEGORY_ACCENTS[i % CATEGORY_ACCENTS.length];
             return (
-              <Reveal key={category._id} delay={Math.min(i * 0.06, 0.3)}>
+              <Reveal
+                key={category._id}
+                delay={Math.min(i * 0.06, 0.3)}
+                className="shrink-0 snap-start sm:shrink"
+              >
                 <Link
                   href={`/services/${category.slug}`}
                   className={cn(
-                    "group relative flex aspect-[4/5] flex-col overflow-hidden rounded-2xl border border-black/10 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-transparent hover:shadow-xl hover:shadow-brand-navy-900/10 dark:border-white/10 dark:hover:shadow-black/30",
+                    "group relative flex h-40 w-32 flex-col overflow-hidden rounded-2xl border border-black/10 p-3 transition-all duration-300 hover:-translate-y-1 hover:border-transparent hover:shadow-xl hover:shadow-brand-navy-900/10 dark:border-white/10 dark:hover:shadow-black/30 sm:h-auto sm:w-auto sm:aspect-[4/5] sm:p-4",
                     !image && cn("bg-gradient-to-br to-surface", accent.tint),
                   )}
                 >
@@ -195,7 +199,7 @@ export default async function HomePage() {
                         src={image}
                         alt=""
                         fill
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                        sizes="(max-width: 640px) 128px, (max-width: 1024px) 33vw, 20vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-brand-navy-950/85 via-brand-navy-950/10 to-transparent" />
@@ -209,7 +213,7 @@ export default async function HomePage() {
                       <CategoryIcon
                         slug={category.slug}
                         aria-hidden
-                        className="pointer-events-none absolute -bottom-4 -right-4 size-24 rotate-12 text-black/[0.04] transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110 dark:text-white/[0.05]"
+                        className="pointer-events-none absolute -bottom-4 -right-4 size-20 rotate-12 text-black/[0.04] transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110 dark:text-white/[0.05] sm:size-24"
                       />
                     </>
                   )}
@@ -217,27 +221,41 @@ export default async function HomePage() {
                   <div className="relative z-10 flex items-start justify-between">
                     <span
                       className={cn(
-                        "flex size-11 items-center justify-center rounded-2xl text-white shadow-md transition-all duration-300 group-hover:-rotate-3 group-hover:scale-110",
+                        "flex size-9 items-center justify-center rounded-xl text-white shadow-md transition-all duration-300 group-hover:-rotate-3 group-hover:scale-110 sm:size-11 sm:rounded-2xl",
                         image ? "bg-white/20 backdrop-blur-sm" : cn("bg-gradient-to-br", accent.icon, accent.ring)
                       )}
                     >
-                      <CategoryIcon slug={category.slug} className="size-5" />
+                      <CategoryIcon slug={category.slug} className="size-4 sm:size-5" />
                     </span>
-                    {category.isNew && <Badge variant="brand">{tc("new")}</Badge>}
+                    {category.isNew && (
+                      <Badge variant="brand" className="!px-1.5 !py-0.5 !text-[10px] sm:!px-2 sm:!py-0.5 sm:!text-xs">
+                        {tc("new")}
+                      </Badge>
+                    )}
                   </div>
 
-                  <div className="relative z-10 mt-auto flex items-end justify-between gap-2">
-                    <div>
-                      <p className={cn("font-semibold", image ? "text-white drop-shadow-sm" : "text-foreground")}>
+                  <div className="relative z-10 mt-auto flex items-end justify-between gap-1">
+                    <div className="min-w-0">
+                      <p
+                        className={cn(
+                          "truncate text-sm font-semibold sm:text-base",
+                          image ? "text-white drop-shadow-sm" : "text-foreground",
+                        )}
+                      >
                         {category.name}
                       </p>
-                      <p className={cn("mt-0.5 text-xs", image ? "text-white/85" : "text-slate-500 dark:text-slate-400")}>
+                      <p
+                        className={cn(
+                          "mt-0.5 text-[11px] sm:text-xs",
+                          image ? "text-white/85" : "text-slate-500 dark:text-slate-400",
+                        )}
+                      >
                         {t("fromPrice", { price: category.startingPrice })}
                       </p>
                     </div>
                     <ArrowRight
                       className={cn(
-                        "size-4 shrink-0 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100",
+                        "hidden size-4 shrink-0 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100 sm:block",
                         image ? "text-white" : "text-brand-navy-400 dark:text-brand-orange-400"
                       )}
                     />
@@ -268,9 +286,13 @@ export default async function HomePage() {
               <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </Reveal>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+          <div className="-mx-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-3 pb-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:overflow-visible sm:px-0 lg:grid-cols-4">
             {featuredKarigars.map((karigar, i) => (
-              <Reveal key={karigar._id} delay={Math.min(i * 0.06, 0.3)}>
+              <Reveal
+                key={karigar._id}
+                delay={Math.min(i * 0.06, 0.3)}
+                className="w-40 shrink-0 snap-start sm:w-auto sm:shrink"
+              >
                 <KarigarCard karigar={karigar} />
               </Reveal>
             ))}

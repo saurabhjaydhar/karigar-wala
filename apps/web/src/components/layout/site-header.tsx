@@ -6,8 +6,7 @@ import { Menu, Search, Phone } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { NotificationsBell } from "@/components/features/notifications/notifications-bell";
-import { LocaleSwitcher } from "@/components/layout/locale-switcher";
-import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { HeaderSettingsMenu } from "@/components/layout/header-settings-menu";
 import { MobileDrawer } from "@/components/layout/mobile-drawer";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -67,10 +66,7 @@ export function SiteHeader() {
           </nav>
 
           <div className="ml-auto flex items-center gap-1">
-            <div className="hidden items-center gap-1 md:flex lg:hidden">
-              <LocaleSwitcher />
-              <ThemeToggle />
-            </div>
+            <HeaderSettingsMenu />
             <button
               type="button"
               aria-label={t("search")}

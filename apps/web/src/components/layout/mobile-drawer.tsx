@@ -6,8 +6,6 @@ import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { usePathname } from "@/i18n/navigation";
-import { LocaleSwitcher } from "@/components/layout/locale-switcher";
-import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 interface NavLink {
   href: string;
@@ -113,11 +111,6 @@ export function MobileDrawer({ open, onClose }: { open: boolean; onClose: () => 
                 </Link>
               ))}
             </nav>
-
-            <div className="mt-auto flex items-center justify-center gap-2 border-t border-black/10 pt-4 dark:border-white/10 md:hidden">
-              <LocaleSwitcher />
-              <ThemeToggle />
-            </div>
           </motion.div>
         </>
       )}
